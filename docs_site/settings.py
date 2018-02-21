@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 DOCS_DIR = os.path.join(BASE_DIR,'docs','templates',)
-STATIC_DIR = os.path.join(BASE_DIR,'docs/templates/docs')
+STATIC_DIR = os.path.join(BASE_DIR,'docs','static')
 MEDIA_DIR = os.path.join(BASE_DIR,'templates')
 
 
@@ -28,6 +28,22 @@ SECRET_KEY = '05+x%ug15axt2n5io-h$yffm$ld$0x0$z^s)33@n=of)58697c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
+
 
 ALLOWED_HOSTS = []
 

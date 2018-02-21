@@ -14,7 +14,7 @@
         crossorigin="anonymous">
     
     {% comment %} Custom CSS {% endcomment %}
-    <link rel="stylesheet"   href="{ static 'css/docs.css}" />
+    <link rel="stylesheet" href="{% static 'css/docs.css' %}">
 
     {% comment %} Medium Syle Editor  {% endcomment %}
     <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
@@ -54,29 +54,28 @@
             </li>
         {% else %}
             <li>
-                <li>
-                    <a class='nav navbar-right' href="{% url 'login' %}">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </a>
-                </li>
+                    <a class='nav navbar-right' href="{% url 'login' %}">Login</a>
             </li>
         {% endif %}
     </ul>
     </nav>
 
-<body class='loader'>
+<body>
 {% comment %} blog content  {% endcomment %}
-        <div class='content container'>
-            <div class='row'>
-                <div class='col-mid-8'>
-                    <div class='blog_posts'>
-                        {% block content %}
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="blog_posts">
+                        {% block content %} 
                         
-                        {% endblock content %}
+                        {% endblock %}
+        
                     </div>
+        
                 </div>
             </div>
         </div>
+
     </div>
 
 </body>

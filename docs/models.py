@@ -11,10 +11,11 @@ class Post(models.Model):
 
     def publish(self):
         self.published_date = timezone.now()
+        self.save()
     
 ## Comments - Not need for the Documenation Site
-    def approve_comment(self):
-        return self.comments.filter(approved_comments=True)
+    def approve_comments(self):
+        return self.comments.filter(approved_comment=True)
 
     def get_absolute_url(self):
         return reverse('docs:post_detail', kwargs={'pk':self.pk}) #Will be defined in the URLS
@@ -27,11 +28,11 @@ class Comment(models.Model):
     author = models.CharField(max_length=264)
     text = models.TextField()
     create_date = models.DateTimeField(default=timezone.now)
-    approved_comments = models.BooleanField(default=False)
+    approved_comment = models.BooleanField(default=False)
 
 
     def approve(self):
-        self.approve_comment = True
+        self.approved_comment = True
         self.save()
         
     def get_absolute_url(self):

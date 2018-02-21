@@ -1,6 +1,6 @@
 {% extends "docs/base.html" %}
 
-{% block  context %}
+{% block content %}
 
 <div class='jumbtron'>
     <h2>Please login in:</h2>
@@ -9,11 +9,12 @@
     <p>Your username and password do not match, please try again</p>
     {% endif %}
 
-    <form action="{% url 'login' %}" method="post">
+ <form method="POST" action="{% url 'login' %}">
+
     {% csrf_token %}
         {{ form.as_p }}
             <input type="submit" value="Login" class="btn btn-primary">
             <input type="hidden" name="next" value="{{ next }}">
     </form>
 </div>
-{% endblock context %}
+{% endblock content %}
