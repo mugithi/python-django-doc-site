@@ -1,42 +1,83 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import (TemplateView, ListView, DeleteView, DetailView, UpdateView,CreateView)
+from django.views.generic import (TemplateView, ListView, DeleteView, DetailView, UpdateView, CreateView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from docs.models import Post, Comment
 from docs.forms import PostForm, CommentForm
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+
+
 # Create your views here.
+
+
+
+class DocsSearchListView(ListView):
+    '''
+    Display a docs list page filtered by search query
+    '''
+
+    model = Post
+    paginate_by = 10
+
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        print("Isaack qs {}".format(qs.__dict__))
+
+        keywords = self.request.GET.get('q')
+        print('keywords {}:'.format(keywords))
+        if keywords:
+            query = SearchQuery(keywords)
+            vector = SearchVector('title', 'text')
+            qs = qs.annotate(search=vector).filter(search=query)
+
+            qs = qs.annotate(rank=SearchRank(vector, query)).order_by('-rank')
+            print("qs {}".format(qs.__dict__))
+        return qs
+
+        # def get_context_data(self, **kwargs):
+        #     return super().get_context_data(q=self.request.GET.get('q', ""))
+
 
 class AboutView(TemplateView):
     template_name = 'docs/about.html'
 
+
 class PostListView(ListView):
     model = Post
+
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+
 
 class PostDetailView(DetailView):
     model = Post
 
+
 class CreatePostView(CreateView, LoginRequiredMixin):
-    login_url ='/login'
+    login_url = '/login'
     redirect_field_name = 'docs/post_detail.html'
     form_class = PostForm
     model = Post
 
+
 class DraftListView(LoginRequiredMixin, ListView):
-    login_url ='/login/'
+    login_url = '/login/'
     redirect_field_name = 'docs/post_draft_list.html'
     model = Post
+
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('create_date')
 
-class PostUpdateView(LoginRequiredMixin,UpdateView):
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/'
     redirect_field_name = 'docs/post_detail.html'
     form_class = PostForm
     model = Post
+
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
@@ -65,28 +106,18 @@ def add_comment_to_post(request, pk):
     return render(request, 'docs/comment_form.html', {'form': form})
 
 
-@login_required    
+@login_required
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-    print("beforecommit: {}".format(comment.__dict__)) #TEST
+    # print("beforecommit: {}".format(comment.__dict__)) #TEST
     comment.approve()
-    print("aftercommit: {}".format(comment.__dict__))  # TEST
+    # print("aftercommit: {}".format(comment.__dict__))  # TEST
     return redirect('docs:post_detail', pk=comment.post.pk)
 
+
 @login_required
-def comment_remove(request,pk):
+def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk
     comment.delete()
     return redirect('docs:post_detail', pk=post_pk)
-
-
-    
-    
-
-
-
-
-
-
-

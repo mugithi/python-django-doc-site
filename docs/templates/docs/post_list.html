@@ -1,6 +1,13 @@
 {% extends "docs/base.html" %}
 
 {% block content %}
+
+<form action="{% url 'docs:search' %}" method="GET" type="submit">
+    Search:
+    <input type="search" id="search" name="q" placeholder="Search">
+</form>
+
+
 <div class='centerstage'>
 
     {% for post in post_list  %}
