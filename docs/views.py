@@ -12,8 +12,6 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 # Create your views here.
 
-
-
 class DocsSearchListView(ListView):
     '''
     Display a docs list page filtered by search query
