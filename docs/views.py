@@ -61,7 +61,7 @@ class CreatePostView(CreateView, LoginRequiredMixin):
     redirect_field_name = 'docs/post_detail.html'
     form_class = PostForm
     model = Post
-
+   
 
 class DraftListView(LoginRequiredMixin, ListView):
     login_url = '/login/'
@@ -78,11 +78,14 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
 
+    #TODO Add the autoselect Username
+    # def form_valid(self, form):
+    #     form.author_id = self.request.user
+    #     return super().form_valid(form)
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('docs:post_list')
-
 
 @login_required
 def post_publish(request, pk):

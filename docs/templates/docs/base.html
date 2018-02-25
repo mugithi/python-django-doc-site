@@ -10,55 +10,73 @@
         crossorigin="anonymous">
 
     {% comment %} CSS theme {% endcomment %}
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/journal/bootstrap.min.css" rel="stylesheet" integrity="sha384-/qQob+A1P2FeRYphuSbqp7heEKdhjZxqgAz/yWLX9CQKU9FTB8wKTexI0IiFlIXC"
-        crossorigin="anonymous">
-    
-    {% comment %} Custom CSS {% endcomment %}
+    {% comment %} <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/journal/bootstrap.min.css" rel="stylesheet" integrity="sha384-/qQob+A1P2FeRYphuSbqp7heEKdhjZxqgAz/yWLX9CQKU9FTB8wKTexI0IiFlIXC"
+        crossorigin="anonymous"> {% endcomment %}
+    {% comment %} 
     <link rel="stylesheet" href="{% static 'css/docs.css' %}">
+    {% endcomment %}
 
     {% comment %} Medium Syle Editor  {% endcomment %}
     <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
 
-    {# Fonts#}
+    {% comment %}
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Russo+One" rel="stylesheet">
+    {% endcomment %}
 
 </head>
 {% comment %} Navbar {% endcomment %}
-    <nav class="navbar navbar-default techfont custom-navbar ">
-        <div class='container'>
+<div class='container'>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-            <ul class='nav navbar-nav'>
-                        <li>
-                            <li><a href="{% url 'docs:about'%}">About</a></li>
-                        <li>
-                            <a href="https://www.github.com">Github</a>
-                        </li>
-                        <li>
-                            <a href="https://www.linkedin.com">LinkedIn</a>
-                        </li>
-            </ul>
-    <ul class='nav navbar-nav navbar-right'>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
         {% if  user.is_authenticated %}
-            <li>
-                <a href="{% url 'docs:post_new' %}">New Post</a>
-            </li>
-            <li>
-                <a href="{% url 'docs:post_draft_list' %}">Drafts</a>
-            </li>
-            <li>
-                <a href="{% url 'logout' %}">Log Out</a>
-            </li>
-            <li>
-                <a>Welcome: {{ user.username }}</a>
-            </li>
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'docs:post_new' %}">New Post</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'docs:post_draft_list' %}">Drafts</a>
+                </li>
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link"> Welcome: {{ user.username }}</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+        </ul>
         {% else %}
-            <li>
-                    <a class='nav navbar-right' href="{% url 'login' %}">Login</a>
-            </li>
+        <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'docs:about'%}">About<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.github.com">Github</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.linkedin.com">LinkedIn</a>
+                    </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active " >
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+        </ul>
+      
         {% endif %}
-    </ul>
-    </nav>
+             {% block headers %} {% endblock headers %}
+    </div>
+</nav>
+</div>
+
 
 <body>
 {% comment %} blog content  {% endcomment %}

@@ -1,10 +1,14 @@
 {% extends "docs/base.html" %}
 {% block content %}
-    <h1>New comment</h1>
+<div class="=container">
+    <h2>New comment</h2>
+    <div class="form-group">
     <form method="POST" class="post-form">
         {% csrf_token %} 
-        {{form.as_p}}
+        {{form.as_div}}
         <button type="submit" class="save btn btn-default">Post Comment</button>
     </form>
-    <script>var editor = new MediumEditor('.editable');</script>
+    </div>
+    {% comment %} <script>var editor = new MediumEditor('.editable');</script> {% endcomment %}
+    </div>
 {% endblock %}
