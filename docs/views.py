@@ -17,17 +17,12 @@ class DocsSearchListView(ListView):
     '''
     Display a docs list page filtered by search query
     '''
-
     model = Post
     paginate_by = 10
 
-
     def get_queryset(self):
         qs = super().get_queryset()
-        print("Isaack qs {}".format(qs.__dict__))
-
         keywords = self.request.GET.get('q')
-        print('keywords {}:'.format(keywords))
         if keywords:
             query = SearchQuery(keywords)
             vector = SearchVector('title', 'text')
@@ -61,7 +56,6 @@ class CreatePostView(CreateView, LoginRequiredMixin):
     redirect_field_name = 'docs/post_detail.html'
     form_class = PostForm
     model = Post
-   
 
 class DraftListView(LoginRequiredMixin, ListView):
     login_url = '/login/'
