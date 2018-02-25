@@ -2,19 +2,24 @@
 
 {% block content %}
 
-<div class='jumbtron'>
-    <h2>Please login in:</h2>
-    <h3>(Must be SuperUser, please check admin for issues)</h3>
+<div class='container'>
+<div class='container'>
+    <h4>Please login in:</h4>
     {% if form.errors %}
     <p>Your username and password do not match, please try again</p>
     {% endif %}
-
+</div>
  <form method="POST" action="{% url 'login' %}">
+    <div class='container'>
+    <div class="form-group">
 
     {% csrf_token %}
         {{ form.as_p }}
             <input type="submit" value="Login" class="btn btn-primary">
-            <input type="hidden" name="next" value="{{ next }}">
+            {% comment %} <input type="hidden" name="next" value="{{ next }}"> {% endcomment %}
     </form>
+    </div>
 </div>
+</div>
+<a href="{{ signup_url }}">sign up</a>
 {% endblock content %}

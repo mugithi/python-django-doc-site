@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import (TemplateView, ListView, DeleteView, DetailView, UpdateView, CreateView)
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from docs.models import Post, Comment
@@ -46,10 +47,8 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
 
-
 class PostDetailView(DetailView):
     model = Post
-
 
 class CreatePostView(CreateView, LoginRequiredMixin):
     login_url = '/login'
@@ -64,7 +63,6 @@ class DraftListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('create_date')
-
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/'
