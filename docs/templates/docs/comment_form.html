@@ -5,7 +5,7 @@
     <div class="form-group">
     <form method="POST" class="post-form">
         {% csrf_token %} 
-        {{form.as_div}}
+        {{form.as_p}}
         <button type="submit" class="save btn btn-default">Post Comment</button>
     </form>
     </div>

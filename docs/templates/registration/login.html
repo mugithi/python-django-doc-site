@@ -3,10 +3,9 @@
 {% block content %}
 
 <div class='container'>
-<div class='container'>
     <h4>Please login in:</h4>
     {% if form.errors %}
-    <p>Your username and password do not match, please try again</p>
+     <p style="color: red">Your username and password do not match, please try again</p>
     {% endif %}
 </div>
  <form method="POST" action="{% url 'login' %}">
@@ -18,8 +17,10 @@
             <input type="submit" value="Login" class="btn btn-primary">
             {% comment %} <input type="hidden" name="next" value="{{ next }}"> {% endcomment %}
     </form>
+    
     </div>
+    <h7>If you do not have an account please go ahead
+        <a href="{% url 'signup'%}">Register</a>
+    </h7>
 </div>
-</div>
-<a href="{{ signup_url }}">sign up</a>
 {% endblock content %}

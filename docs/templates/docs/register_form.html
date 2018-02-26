@@ -1,0 +1,24 @@
+{% extends 'docs/base.html' %}
+
+{% block content %}
+<h4>Sign Up</h4>
+
+<form class="post-form" method="POST">
+ {% csrf_token %}
+<div class="form-group">
+{% for field in  form %}
+    {{ field.label_tag }}<br>
+    {{ field }}
+    {% if field.help_text%}
+        {% comment %} <small style="color: grey">{{ field.help_text }}</small> {% endcomment %}
+    {% endif %}
+    {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+    {% endfor %}
+        
+</p>
+{% endfor %}
+    <input type="submit" value="Sumbit" class="btn btn-primary">
+</form>
+
+{% endblock %}

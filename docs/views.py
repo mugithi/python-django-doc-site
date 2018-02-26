@@ -4,13 +4,31 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from docs.models import Post, Comment
-from docs.forms import PostForm, CommentForm
+from docs.forms import PostForm, CommentForm, SignUpForm
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from django.contrib.auth import login, authenticate
 
 
 # Create your views here.
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('docs:post_list')
+    else:
+        form = SignUpForm()
+    return render(request, 'docs/register_form.html', {'form': form})
+
+
 
 class DocsSearchListView(ListView):
     '''
